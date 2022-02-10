@@ -1,0 +1,21 @@
+clusterName: CLUSTER_NAME
+config:
+  gceClusterConfig:
+    metadata:
+      'PIP_PACKAGES': 'pyspark==3.0.0 glow.py mlflow'
+  initializationActions:
+  - executableFile: gs://dataproc-initialization-actions/python/pip-install.sh
+  softwareConfig:
+    imageVersion: 2.0-ubuntu18
+    properties:
+      dataproc:dataproc.allow.zero.workers: 'true'
+    optionalComponents:
+    - ANACONDA
+    - JUPYTER
+  masterConfig:
+    numInstances: 1
+    machineTypeUri: n1-standard-4
+    diskConfig:
+      bootDiskType: pd-standard
+      bootDiskSizeGb: 500
+      numLocalSsds: 0

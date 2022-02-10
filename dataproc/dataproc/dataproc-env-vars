@@ -1,0 +1,1 @@
+DATAPROC_CONFIGS=gs://genomics-dataproc-config-files/dataproc-hub.yaml,gs://genomics-dataproc-config-files/single-node.yaml
