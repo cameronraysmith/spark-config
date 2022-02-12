@@ -110,6 +110,14 @@ endif
 
 state-cluster:
 	@make info-cluster | jq -r '. | [.state, .state_message]'
+
+list-cluster-buckets:
+	@gsutil ls | grep "databricks-"
+
+# make copy-cluster-bucket cluster-id-1=684224210727320 cluster-id-2=1905093459501363
+copy-cluster-bucket:
+	gsutil -m cp -r gs://databricks-$(cluster-id-1)/$(cluster-id-1)/home gs://databricks-$(cluster-id-2)/$(cluster-id-2)/home
+
 get-clusterid:
 ifdef CLUSTER_NAME
 	@databricks clusters get --cluster-name $(CLUSTER_NAME)  | jq '.default_tags .ClusterId'
