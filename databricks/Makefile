@@ -108,6 +108,8 @@ else
 	@echo 'define CLUSTER_NAME'
 endif
 
+state-cluster:
+	@make info-cluster | jq -r '. | [.state, .state_message]'
 get-clusterid:
 ifdef CLUSTER_NAME
 	@databricks clusters get --cluster-name $(CLUSTER_NAME)  | jq '.default_tags .ClusterId'
