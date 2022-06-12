@@ -1,5 +1,28 @@
 .PHONY: targets
 
+# configure-cli
+# copy-cluster-bucket
+# create-cluster
+# create-glow-cluster
+# delete-cluster
+# get-clusterid
+# info-cluster
+# install-cli
+# install-glow
+# library-status
+# list-cluster-buckets
+# list-clusters
+# print_make_vars
+# restart-cluster
+# start-cluster
+# state-cluster
+# terminate-cluster
+# wait
+# wait_1
+# wait_2
+# wait_3
+# write-cluster-configuration
+
 # https://stackoverflow.com/a/26339924/
 # How do you get the list of targets in a makefile?
 targets:
@@ -12,7 +35,8 @@ targets:
 
 # CLUSTER_NAME=test-cluster-01
 CLUSTER_NAME=db-lts-cluster-01
-SPARK_LTS_VERSION=9.1.x-cpu-ml-scala2.12
+# SPARK_LTS_VERSION=9.1.x-cpu-ml-scala2.12
+SPARK_LTS_VERSION=10.4.x-cpu-ml-scala2.12
 SPARK_LATEST_VERSION=10.3.x-cpu-ml-scala2.12
 
 DATABRICKS_CLUSTER_CONFIG_FILE=./clusters/cluster.json
@@ -22,7 +46,7 @@ define DATABRICKS_CLUSTER_CONFIG
     "num_workers": null,
     "autoscale": {
         "min_workers": 1,
-        "max_workers": 3
+        "max_workers": 10
     },
     "cluster_name": "$(CLUSTER_NAME)",
     "spark_version": "$(SPARK_LTS_VERSION)",
@@ -35,7 +59,7 @@ define DATABRICKS_CLUSTER_CONFIG
     "ssh_public_keys": [],
     "custom_tags": {},
     "spark_env_vars": {},
-    "autotermination_minutes": 30,
+    "autotermination_minutes": 60,
     "cluster_source": "UI",
     "init_scripts": []
 }
@@ -114,7 +138,7 @@ state-cluster:
 list-cluster-buckets:
 	@gsutil ls | grep "databricks-"
 
-# make copy-cluster-bucket cluster-id-1=684224210727320 cluster-id-2=1905093459501363
+# make copy-cluster-bucket cluster-id-1=684224210727320 cluster-id-2=2849265987648824
 copy-cluster-bucket:
 	gsutil -m cp -r gs://databricks-$(cluster-id-1)/$(cluster-id-1)/home gs://databricks-$(cluster-id-2)/$(cluster-id-2)/home
 
@@ -145,10 +169,10 @@ install-glow:
 ifdef CLUSTER_ID
 	databricks libraries install \
     --cluster-id $(CLUSTER_ID) \
-    --maven-coordinates "io.projectglow:glow-spark3_2.12:1.1.2";
+    --maven-coordinates "io.projectglow:glow-spark3_2.12:1.2.1";
 	databricks libraries install \
     --cluster-id $(CLUSTER_ID) \
-    --pypi-package "glow.py==1.1.2"
+    --pypi-package "glow.py==1.2.1"
 else
 	@echo 'define CLUSTER_ID'
 endif
